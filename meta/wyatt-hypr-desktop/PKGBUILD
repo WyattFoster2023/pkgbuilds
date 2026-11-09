@@ -1,0 +1,46 @@
+# Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
+pkgname=wyatt-hypr-desktop
+pkgver=1
+pkgrel=1
+pkgdesc='Wyatt: Hyprland session and shared desktop tools'
+arch=('any')
+url='https://github.com/WyattFoster2023/pkgbuilds'
+license=('MIT')
+depends=(
+  wyatt-base
+  hyprland
+  hypridle
+  hyprlock
+  hyprpicker
+  hyprpolkitagent
+  xdg-desktop-portal-hyprland
+  greetd
+  greetd-tuigreet
+  quickshell
+  matugen
+  awww
+  swayosd
+  mako
+  udiskie
+  libnotify
+  libcanberra
+  cliphist
+  wl-clipboard
+  grim
+  slurp
+  swappy
+  kitty
+  rofi
+  nwg-displays
+  dolphin
+  gnome-characters
+  cava
+  bluetui
+  python-cairo
+  python-gobject
+  sound-theme-elementary
+  ocean-sound-theme
+  wayle-fork
+  skwd-daemon-bin
+  skwd-wall
+)

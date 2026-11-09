@@ -1,0 +1,22 @@
+# Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
+pkgname=wyatt-host-acer-swift-16
+pkgver=1
+pkgrel=1
+pkgdesc='Wyatt: Acer Swift 16 (Panther Lake) hardware'
+arch=('any')
+url='https://github.com/WyattFoster2023/pkgbuilds'
+license=('MIT')
+depends=(
+  wyatt-hypr-desktop
+  linux-firmware
+  sof-firmware
+  mesa
+  vulkan-intel
+  intel-media-driver
+  thermald
+  bolt
+  acer-wmi-battery-dkms
+)
+conflicts=(
+  wyatt-host-dell-g7-17
+)

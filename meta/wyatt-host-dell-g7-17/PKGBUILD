@@ -1,0 +1,26 @@
+# Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
+pkgname=wyatt-host-dell-g7-17
+pkgver=1
+pkgrel=1
+pkgdesc='Wyatt: Dell G-series (Intel + NVIDIA) hardware'
+arch=('any')
+url='https://github.com/WyattFoster2023/pkgbuilds'
+license=('MIT')
+depends=(
+  wyatt-hypr-desktop
+  nvidia-open-dkms
+  nvidia-utils
+  lib32-nvidia-utils
+  nvidia-prime
+  nvidia-settings
+  libxnvctrl
+  opencl-nvidia
+  nvidia-container-toolkit
+  awcc-bin
+  mesa
+  vulkan-intel
+  intel-media-driver
+)
+conflicts=(
+  wyatt-host-acer-swift-16
+)

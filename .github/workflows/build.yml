@@ -1,0 +1,28 @@
+name: build
+on:
+  push:
+    branches: [main]
+    paths: [meta/**, own/**, aur/**]
+  workflow_dispatch:
+    inputs: {pkg: {description: 'package dir, e.g. own/wayle-fork', required: true}}
+# Never runs on pull_request: the runner is self-hosted and the repo is public.
+permissions: {contents: read}
+jobs:
+  build:
+    runs-on: pkgbuilds-build
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - id: list
+        run: |
+          if [ -n "${{ inputs.pkg }}" ]; then echo "${{ inputs.pkg }}" > list
+          else scripts/changed.sh "${{ github.event.before }}" > list; fi
+          cat list
+      - name: Build in the Arch image (no secrets in this job)
+        run: |
+          mkdir -p out && chmod 777 out
+          docker run --rm -v "$PWD:/w" -w /w -e HOME=/home/builder "$REG/archbuild:latest" \
+            bash -c 'git config --global --add safe.directory /w; while read -r d; do scripts/build.sh "$d" /w/out; done < list'
+        env: {REG: 'zot.registry.svc.cluster.local:5000'}
+      - uses: actions/upload-artifact@v4
+        with: {name: packages, path: out/*.pkg.tar.zst}

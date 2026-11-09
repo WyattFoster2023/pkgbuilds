@@ -1,0 +1,51 @@
+# Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
+pkgname=wyatt-base
+pkgver=1
+pkgrel=1
+pkgdesc='Wyatt: base CLI, networking, fonts and dev tools'
+arch=('any')
+url='https://github.com/WyattFoster2023/pkgbuilds'
+license=('MIT')
+depends=(
+  base-devel
+  sudo
+  git
+  github-cli
+  openssh
+  curl
+  wget
+  unzip
+  gnupg
+  man-db
+  man-pages
+  nano
+  vim
+  fzf
+  jq
+  usbutils
+  lshw
+  inotify-tools
+  chezmoi
+  sshfs
+  ntfs-3g
+  bind
+  openbsd-netcat
+  networkmanager
+  tailscale
+  gnome-keyring
+  bluez-utils
+  power-profiles-daemon
+  brightnessctl
+  docker
+  docker-buildx
+  docker-compose
+  npm
+  pnpm
+  python-pipx
+  python-virtualenv
+  ttf-jetbrains-mono-nerd
+  ttf-nerd-fonts-symbols
+  ttf-roboto
+  ttf-roboto-mono
+  paru-bin
+)

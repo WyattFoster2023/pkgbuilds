@@ -1,0 +1,28 @@
+# One entry per package in aur/ and own/. `wayle-fork` follows Wyatt's fork.
+[__config__]
+oldver = "old_ver.json"
+newver = "new_ver.json"
+
+[wayle-fork]
+source = "github"
+github = "WyattFoster2023/wayle"
+use_max_tag = true
+prefix = "v"
+
+# AUR packages (seed aur/<name>/ with the AUR recipe before the first build):
+[paru-bin]
+source = "aur"
+[skwd-daemon-bin]
+source = "aur"
+[skwd-wall]
+source = "aur"
+[brave-bin]
+source = "aur"
+[claude-desktop-extra]
+source = "aur"
+[ya-claude-code]
+source = "aur"
+[acer-wmi-battery-dkms]
+source = "aur"
+[awcc-bin]
+source = "aur"

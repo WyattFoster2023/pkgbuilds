@@ -1,0 +1,12 @@
+name: lib-check
+on:
+  schedule: [{cron: '0 4 * * *'}]
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: pkgbuilds-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Missing-library check on published source-built packages
+        run: scripts/lib-check.sh
+        env: {REG: 'zot.registry.svc.cluster.local:5000', GH_TOKEN: '${{ github.token }}'}

@@ -1,0 +1,32 @@
+# Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
+pkgname=wyatt-apps
+pkgver=1
+pkgrel=1
+pkgdesc='Wyatt: daily apps'
+arch=('any')
+url='https://github.com/WyattFoster2023/pkgbuilds'
+license=('MIT')
+depends=(
+  wyatt-base
+  code
+  obsidian
+  thunderbird
+  vlc
+  vlc-plugins-all
+  discord
+  brave-bin
+  claude-desktop-extra
+  ya-claude-code
+)
+optdepends=(
+  'blender: 3D modelling'
+  'freecad: CAD'
+  'kicad: PCB design'
+  'inkscape: vector graphics'
+  'gimp: image editing'
+  'steam: games'
+  'ollama: local LLMs'
+  'cursor-bin: AI editor'
+  'spotify: music'
+  'libreoffice-still: office suite'
+)

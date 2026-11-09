@@ -1,0 +1,14 @@
+name: publish
+on:
+  workflow_run: {workflows: [build], types: [completed], branches: [main]}
+permissions: {actions: read, contents: read}
+concurrency: {group: publish, cancel-in-progress: false}
+jobs:
+  publish:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: pkgbuilds-publish   # separate runner set; the only one with the key
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: {name: packages, path: out, run-id: '${{ github.event.workflow_run.id }}', github-token: '${{ github.token }}'}
+      - run: scripts/publish.sh out   # GPG_KEY_ID / key provided by the runner env

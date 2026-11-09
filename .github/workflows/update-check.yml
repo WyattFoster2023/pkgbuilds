@@ -1,0 +1,15 @@
+name: update-check
+on:
+  schedule: [{cron: '30 3 * * *'}]
+  workflow_dispatch:
+permissions: {contents: write, pull-requests: write}
+jobs:
+  check:
+    runs-on: pkgbuilds-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: nvchecker, then PR newer AUR recipes
+        run: |
+          docker run --rm -v "$PWD:/w" -w /w "$REG/archbuild:latest" bash -c 'nvchecker -c nvchecker.toml && nvcmp -c nvchecker.toml' | tee report.txt
+          scripts/open-update-prs.sh report.txt
+        env: {REG: 'zot.registry.svc.cluster.local:5000', GH_TOKEN: '${{ github.token }}'}

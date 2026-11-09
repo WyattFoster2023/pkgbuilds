@@ -13,6 +13,8 @@ jobs:
         with: {name: packages, path: out, run-id: '${{ github.event.workflow_run.id }}', github-token: '${{ github.token }}'}
       - name: Sign and upload (inside the Arch image; key mounted read-only)
         run: |
+          # The container's builder user must write the .sig files next to the packages.
+          chmod -R a+rwX out
           docker run --rm --network host -v "$PWD:/w" -w /w -v /home/runner/gpg:/gpg:ro \
             -e GPG_KEY_ID -e GNUPGHOME=/tmp/gnupg -e REPO_URL "$REG/archbuild:latest" \
             bash -c 'mkdir -m700 /tmp/gnupg && gpg --batch --import /gpg/private.asc && scripts/publish.sh out'

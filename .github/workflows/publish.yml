@@ -11,4 +11,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with: {name: packages, path: out, run-id: '${{ github.event.workflow_run.id }}', github-token: '${{ github.token }}'}
-      - run: scripts/publish.sh out   # GPG_KEY_ID / key provided by the runner env
+      - name: Sign and upload (inside the Arch image; key mounted read-only)
+        run: |
+          docker run --rm --network host -v "$PWD:/w" -w /w -v /home/runner/gpg:/gpg:ro \
+            -e GPG_KEY_ID -e GNUPGHOME=/tmp/gnupg -e REPO_URL "$REG/archbuild:latest" \
+            bash -c 'mkdir -m700 /tmp/gnupg && gpg --batch --import /gpg/private.asc && scripts/publish.sh out'
+        env: {REG: 'zot.registry.svc.cluster.local:5000'}

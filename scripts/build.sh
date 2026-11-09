@@ -14,8 +14,10 @@ flags=(--syncdeps)
 [[ $dir == meta/* ]] && flags=(--nodeps)
 # Optional read-only access to our own repo for packages that depend on each other.
 # /etc/pacman.conf is owned by builder in the image (sudoers only allows pacman).
+# SigLevel Never: the repo is signed with a key the image does not have, and it is
+# only reachable inside the cluster.
 if [ -n "${WYATT_REPO_URL:-}" ] && curl -fsS -o /dev/null "$WYATT_REPO_URL/wyatt.db"; then
-  printf '\n[wyatt]\nSigLevel = Optional TrustAll\nServer = %s\n' "$WYATT_REPO_URL" >> /etc/pacman.conf
+  printf '\n[wyatt]\nSigLevel = Never\nServer = %s\n' "$WYATT_REPO_URL" >> /etc/pacman.conf
 fi
 sudo pacman -Sy --noconfirm
 ( cd "$dir" && namcap PKGBUILD && makepkg "${flags[@]}" --noconfirm --cleanbuild --skippgpcheck \

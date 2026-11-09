@@ -6,6 +6,10 @@ pkgdesc='Wyatt: Hyprland session and shared desktop tools'
 arch=('any')
 url='https://github.com/WyattFoster2023/pkgbuilds'
 license=('MIT')
+source=('greetd-wyatt.toml' 'greetd-wyatt.conf' '70-wyatt-hypr-desktop.preset')
+sha256sums=('a060f725fe3b883ba9c4b2b81bc78c132f44bc1ad81350d3016b54e4c0e1917f'
+            '0c254744650fb7d7deaea4a867c506befef7b5b29ca13cb4cb580090135c8c84'
+            'c3d4dbd094b2787c3e9d861fe1849576def59a6f3171fff088b40bff56e62b18')
 depends=(
   wyatt-base
   hyprland
@@ -44,3 +48,9 @@ depends=(
   skwd-daemon-bin
   skwd-wall
 )
+
+package() {
+  install -Dm644 greetd-wyatt.toml "$pkgdir/usr/share/wyatt-hypr-desktop/greetd.toml"
+  install -Dm644 greetd-wyatt.conf "$pkgdir/usr/lib/systemd/system/greetd.service.d/10-wyatt.conf"
+  install -Dm644 70-wyatt-hypr-desktop.preset "$pkgdir/usr/lib/systemd/system-preset/70-wyatt-hypr-desktop.preset"
+}

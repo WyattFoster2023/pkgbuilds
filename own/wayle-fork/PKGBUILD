@@ -2,7 +2,7 @@
 # Wyatt's fork of wayle (custom-dropdown branch on top of v0.7.0).
 pkgname=wayle-fork
 pkgver=0.7.0.r1.gd3a76c3
-pkgrel=1
+pkgrel=2
 pkgdesc='Wayle desktop shell, WyattFoster2023 fork (custom-dropdown module)'
 arch=('x86_64')
 url='https://github.com/WyattFoster2023/wayle'
@@ -31,6 +31,9 @@ prepare() {
 build() {
   cd "$pkgname"
   export RUSTUP_TOOLCHAIN=stable CARGO_TARGET_DIR=target
+  # Upstream uses fat LTO with codegen-units=1: a single-threaded 7-8GiB link.
+  # Thin LTO with parallel codegen uses all cores and far less RAM.
+  export CARGO_PROFILE_RELEASE_LTO=thin CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
   cargo build --frozen --release -p wayle -p wayle-settings
 }
 

@@ -10,7 +10,7 @@ while read -r name old arrow new; do
   if [ -d "own/$name" ]; then gh workflow run build.yml -f pkg="own/$name"; continue; fi
   git clone --depth 1 "https://aur.archlinux.org/$name.git" "/tmp/aur-$name"
   br="update/$name-$new"; git checkout -B "$br"
-  mkdir -p "aur/$name"; rsync -a --delete --exclude .git "/tmp/aur-$name/" "aur/$name/"
+  mkdir -p "aur/$name"; rsync -a --delete --exclude .git --exclude .gitignore "/tmp/aur-$name/" "aur/$name/"
   git add "aur/$name"; git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "aur: $name $old -> $new"
   git push -f origin "$br"
   gh pr create --title "aur: $name $old -> $new" --body "Review the PKGBUILD diff before merging; merging triggers the build." --head "$br" || true

@@ -9,7 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: nvchecker, then PR newer AUR recipes
+        shell: bash
         run: |
-          docker run --rm -v "$PWD:/w" -w /w "$REG/archbuild:latest" bash -c 'scripts/old-versions.sh && nvchecker -c nvchecker.toml && nvcmp -c nvchecker.toml' | tee report.txt
+          # Work on a copy: the container's builder user cannot write the runner-owned checkout.
+          docker run --rm -v "$PWD:/src:ro" -w /home/builder "$REG/archbuild:latest" \
+            bash -c 'cp -a /src /home/builder/w && cd /home/builder/w && scripts/old-versions.sh && nvchecker -c nvchecker.toml && nvcmp -c nvchecker.toml' | tee report.txt
           scripts/open-update-prs.sh report.txt
         env: {REG: 'zot.registry.svc.cluster.local:5000', GH_TOKEN: '${{ github.token }}'}

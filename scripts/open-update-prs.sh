@@ -3,8 +3,10 @@
 # on a branch and open a PR so the PKGBUILD diff is reviewed before anything builds.
 # Own-source packages (own/*) are rebuilt via workflow_dispatch instead (no review).
 set -euo pipefail
+gh auth setup-git
 while read -r name old arrow new; do
-  [ "$arrow" = "->" ] || continue
+  # nvcmp prints "name old -> new" for updates and "name None ++ new" for packages with no recipe yet.
+  [ "$arrow" = "->" ] || [ "$arrow" = "++" ] || continue
   if [ -d "own/$name" ]; then gh workflow run build.yml -f pkg="own/$name"; continue; fi
   git clone --depth 1 "https://aur.archlinux.org/$name.git" "/tmp/aur-$name"
   br="update/$name-$new"; git checkout -B "$br"

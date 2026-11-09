@@ -1,6 +1,6 @@
 # Build image for pkgbuilds CI. Rebuilt weekly (rolling Arch drifts fast).
 FROM archlinux:base-devel
-RUN pacman -Syu --noconfirm --needed git pacman-contrib namcap nvchecker rust cargo clang sudo && \
+RUN pacman -Syu --noconfirm --needed git pacman-contrib namcap nvchecker rust cargo clang sudo github-cli rsync && \
     useradd -m builder && \
     echo 'builder ALL=(root) NOPASSWD: /usr/bin/pacman' > /etc/sudoers.d/builder && \
     chmod 0440 /etc/sudoers.d/builder && \

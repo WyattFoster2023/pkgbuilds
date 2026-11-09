@@ -4,10 +4,12 @@ RUN pacman -Syu --noconfirm --needed git pacman-contrib namcap nvchecker rust ca
     useradd -m builder && \
     echo 'builder ALL=(root) NOPASSWD: /usr/bin/pacman' > /etc/sudoers.d/builder && \
     chmod 0440 /etc/sudoers.d/builder && \
+    chown builder /etc/pacman.conf && \
     sed -i 's/^#\?PACKAGER=.*/PACKAGER="Wyatt Foster <wyattfosteredu@gmail.com>"/; s/^#\?MAKEFLAGS=.*/MAKEFLAGS="-j$(nproc)"/' /etc/makepkg.conf && \
     pacman -Scc --noconfirm
 # NOTE: the [wyatt] repo is NOT added here: pacman fails every -Sy while it is
-# empty/unreachable. scripts/build.sh adds it at build time when reachable.
+# empty/unreachable. scripts/build.sh adds it at build time when reachable
+# (pacman.conf is owned by builder for that: sudoers only allows pacman).
 USER builder
 WORKDIR /home/builder
 # aurutils is itself an AUR package: build it once here.

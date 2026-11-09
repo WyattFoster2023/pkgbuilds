@@ -24,7 +24,7 @@ jobs:
           # The checkout is owned by the runner user; the image runs as `builder`,
           # so work on a copy and keep only the output dir writable.
           docker run --rm -v "$PWD:/src:ro" -v "$PWD/out:/out" -w /home/builder -e WYATT_REPO_URL "$REG/archbuild:latest" \
-            bash -c 'cp -a /src /home/builder/w && cd /home/builder/w && git config --global --add safe.directory "*" && while read -r d; do scripts/build.sh "$d" /out; done < list && for f in /out/*:*; do [ -e "$f" ] || continue; mv "$f" "${f//:/.}"; done'
+            bash -c 'cp -a /src /home/builder/w && cd /home/builder/w && git config --global --add safe.directory "*" && while read -r d; do bash scripts/build.sh "$d" /out; done < list && for f in /out/*:*; do [ -e "$f" ] || continue; mv "$f" "${f//:/.}"; done'
         # In-cluster read-only archrepo, so packages can depend on each other (skwd-wall -> skwd-daemon).
         env: {REG: 'zot.registry.svc.cluster.local:5000', WYATT_REPO_URL: 'http://archrepo.archrepo.svc.cluster.local/wyatt/x86_64'}
       - uses: actions/upload-artifact@v4

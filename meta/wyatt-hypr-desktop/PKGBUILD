@@ -1,7 +1,7 @@
 # Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
 pkgname=wyatt-hypr-desktop
 pkgver=1
-pkgrel=1
+pkgrel=2
 pkgdesc='Wyatt: Hyprland session and shared desktop tools'
 arch=('any')
 url='https://github.com/WyattFoster2023/pkgbuilds'
@@ -42,6 +42,10 @@ depends=(
   bluetui
   python-cairo
   python-gobject
+  pipewire-pulse
+  pipewire-alsa
+  alsa-utils
+  rtkit
   sound-theme-elementary
   ocean-sound-theme
   wayle-fork

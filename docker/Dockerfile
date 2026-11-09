@@ -6,9 +6,8 @@ RUN pacman -Syu --noconfirm --needed git pacman-contrib namcap nvchecker rust ca
     chmod 0440 /etc/sudoers.d/builder && \
     sed -i 's/^#\?PACKAGER=.*/PACKAGER="Wyatt Foster <wyattfosteredu@gmail.com>"/; s/^#\?MAKEFLAGS=.*/MAKEFLAGS="-j$(nproc)"/' /etc/makepkg.conf && \
     pacman -Scc --noconfirm
-# Read-only [wyatt] repo so packages can depend on each other. Optional so the very
-# first build (empty repo) works; the DB is signed so Required is the target state.
-RUN printf '\n[wyatt]\nSigLevel = Optional TrustAll\nServer = https://repo.vpn/wyatt/$arch\n' >> /etc/pacman.conf
+# NOTE: the [wyatt] repo is NOT added here: pacman fails every -Sy while it is
+# empty/unreachable. scripts/build.sh adds it at build time when reachable.
 USER builder
 WORKDIR /home/builder
 # aurutils is itself an AUR package: build it once here.

@@ -8,6 +8,14 @@ if [[ $dir == meta/* ]]; then
   n=$(git rev-list --count HEAD -- "$dir")
   sed -i "s/^pkgver=.*/pkgver=$n/; s/^pkgrel=.*/pkgrel=1/" "$dir/PKGBUILD"
 fi
+# Meta-packages only name dependencies (they contain no files), so never install
+# them to build; this also lets them build before their AUR deps are published.
+flags=(--syncdeps)
+[[ $dir == meta/* ]] && flags=(--nodeps)
+# Optional read-only access to our own repo for packages that depend on each other.
+if [ -n "${WYATT_REPO_URL:-}" ] && curl -fsS -o /dev/null "$WYATT_REPO_URL/wyatt.db"; then
+  printf '\n[wyatt]\nSigLevel = Optional TrustAll\nServer = %s\n' "$WYATT_REPO_URL" | sudo tee -a /etc/pacman.conf >/dev/null
+fi
 sudo pacman -Sy --noconfirm
-( cd "$dir" && namcap PKGBUILD && makepkg --syncdeps --noconfirm --cleanbuild --skippgpcheck \
+( cd "$dir" && namcap PKGBUILD && makepkg "${flags[@]}" --noconfirm --cleanbuild --skippgpcheck \
     PKGDEST="$out" )

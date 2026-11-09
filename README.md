@@ -29,6 +29,10 @@ sudo pacman -Sy wyatt-host-acer-swift-16   # or wyatt-host-dell-g7-17
 - **Roll back:** `sudo pacman -U https://repo.vpn/wyatt/x86_64/<old-package>.pkg.tar.zst`.
 - Failures show as red runs in the Actions tab.
 
+- **Login screen (greetd):** `wyatt-hypr-desktop` ships a greetd config (tuigreet -> `start-hyprland`, vt 1),
+  a drop-in pointing greetd at it, and a systemd preset. Pacman never enables services, so once per machine:
+  `sudo systemctl preset greetd.service` (or `sudo systemctl enable greetd.service`), then reboot.
+
 ## Security
 Public repo + self-hosted runner: workflows never run on `pull_request`; require approval for
 outside collaborators. The build job has no secrets; only `publish` (separate runner) holds the GPG key.

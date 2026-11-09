@@ -1,0 +1,20 @@
+pkgbase = awcc-bin
+	pkgdesc = An unofficial alternative to Alienware Command Centre of Windows for the Dell G series
+	pkgver = 1.19.0
+	pkgrel = 1
+	url = https://github.com/tr1xem/AWCC
+	install = awcc.install
+	arch = x86_64
+	license = GPL3
+	depends = acpi_call-dkms
+	depends = libx11
+	depends = systemd-libs
+	depends = glibc
+	depends = glu
+	depends = libglvnd
+	provides = awcc
+	conflicts = awcc-git
+	source = AWCC-v1.19.0.tar.gz::https://github.com/tr1xem/AWCC/releases/download/v1.19.0/AWCC-v1.19.0.tar.gz
+	sha256sums = cbbf54c13f639206f0e6b21332ab08cb54f4ea4e5517e595c3f2ca6358d1b25a
+
+pkgname = awcc-bin

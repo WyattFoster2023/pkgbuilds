@@ -10,6 +10,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: nvchecker, then PR newer AUR recipes
         run: |
-          docker run --rm -v "$PWD:/w" -w /w "$REG/archbuild:latest" bash -c 'nvchecker -c nvchecker.toml && nvcmp -c nvchecker.toml' | tee report.txt
+          docker run --rm -v "$PWD:/w" -w /w "$REG/archbuild:latest" bash -c 'scripts/old-versions.sh && nvchecker -c nvchecker.toml && nvcmp -c nvchecker.toml' | tee report.txt
           scripts/open-update-prs.sh report.txt
         env: {REG: 'zot.registry.svc.cluster.local:5000', GH_TOKEN: '${{ github.token }}'}

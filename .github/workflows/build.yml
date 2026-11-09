@@ -21,8 +21,10 @@ jobs:
       - name: Build in the Arch image (no secrets in this job)
         run: |
           mkdir -p out && chmod 777 out
-          docker run --rm -v "$PWD:/w" -w /w -e HOME=/home/builder "$REG/archbuild:latest" \
-            bash -c 'git config --global --add safe.directory /w; while read -r d; do scripts/build.sh "$d" /w/out; done < list'
+          # The checkout is owned by the runner user; the image runs as `builder`,
+          # so work on a copy and keep only the output dir writable.
+          docker run --rm -v "$PWD:/src:ro" -v "$PWD/out:/out" -w /home/builder "$REG/archbuild:latest" \
+            bash -c 'cp -a /src /home/builder/w && cd /home/builder/w && git config --global --add safe.directory "*" && while read -r d; do scripts/build.sh "$d" /out; done < list'
         env: {REG: 'zot.registry.svc.cluster.local:5000'}
       - uses: actions/upload-artifact@v4
         with: {name: packages, path: out/*.pkg.tar.zst}

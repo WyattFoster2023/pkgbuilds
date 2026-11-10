@@ -17,6 +17,7 @@ depends=(
   brave-bin
   claude-desktop-extra
   ya-claude-code
+  spotify-launcher
 )
 optdepends=(
   'blender: 3D modelling'
@@ -27,6 +28,5 @@ optdepends=(
   'steam: games'
   'ollama: local LLMs'
   'cursor-bin: AI editor'
-  'spotify: music'
   'libreoffice-still: office suite'
 )

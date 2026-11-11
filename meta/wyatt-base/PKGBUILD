@@ -32,6 +32,7 @@ depends=(
   openbsd-netcat
   networkmanager
   tailscale
+  syncthing
   gnome-keyring
   bluez-utils
   power-profiles-daemon

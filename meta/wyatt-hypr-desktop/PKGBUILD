@@ -1,7 +1,7 @@
 # Maintainer: Wyatt Foster <wyattfosteredu@gmail.com>
 pkgname=wyatt-hypr-desktop
 pkgver=1
-pkgrel=3
+pkgrel=4
 pkgdesc='Wyatt: Hyprland session and shared desktop tools'
 arch=('any')
 url='https://github.com/WyattFoster2023/pkgbuilds'
@@ -39,6 +39,7 @@ depends=(
   gnome-characters
   cava
   bluetui
+  termdown
   python-cairo
   python-gobject
   pipewire-pulse

@@ -12,6 +12,8 @@ depends=(
   sof-firmware
   mesa
   vulkan-intel
+  lib32-mesa
+  lib32-vulkan-intel
   intel-media-driver
   thermald
   bolt

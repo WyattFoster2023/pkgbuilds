@@ -14,7 +14,11 @@ aur/<name>/    AUR recipes; changed only by the update-check PRs
 ```
 curl -O https://repo.vpn/wyatt/wyatt.gpg
 sudo pacman-key --add wyatt.gpg && sudo pacman-key --lsign-key <fingerprint>
-# /etc/pacman.conf, below the official repos:
+# /etc/pacman.conf: enable the official [multilib] repo (needed by steam / lib32-*),
+# and add [wyatt] below the official repos:
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+
 [wyatt]
 SigLevel = Required DatabaseRequired
 Server = https://repo.vpn/wyatt/$arch

@@ -12,6 +12,15 @@ fi
 # them to build; this also lets them build before their AUR deps are published.
 flags=(--syncdeps)
 [[ $dir == meta/* ]] && flags=(--nodeps)
+# Optional in-cluster pacman cache (pacoloco): listed first in each official repo, so deps come
+# from the cache when it is up. If it is unreachable we add nothing and pacman uses the normal
+# mirrors; if it dies mid-download pacman falls through to the mirrorlist servers that follow.
+if [ -n "${PACOLOCO_URL:-}" ] && curl -fsS --max-time 20 -o /dev/null "$PACOLOCO_URL/repo/archlinux/core/os/x86_64/core.db"; then
+  sed -i "/^\[\(core\|extra\|multilib\)\]/a Server = $PACOLOCO_URL/repo/archlinux/\$repo/os/\$arch" /etc/pacman.conf
+  echo "pacman: using cache $PACOLOCO_URL"
+else
+  echo "pacman: cache unavailable, using the normal mirrors"
+fi
 # Optional read-only access to our own repo for packages that depend on each other.
 # /etc/pacman.conf is owned by builder in the image (sudoers only allows pacman).
 # SigLevel Never: the repo is signed with a key the image does not have, and it is

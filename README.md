@@ -37,6 +37,16 @@ sudo pacman -Sy wyatt-host-acer-swift-16   # or wyatt-host-dell-g7-17
   a drop-in pointing greetd at it, and a systemd preset. Pacman never enables services, so once per machine:
   `sudo systemctl preset greetd.service` (or `sudo systemctl enable greetd.service`), then reboot.
 
+## Nightly review agent
+A scheduled Claude agent runs daily at 03:00 (America/New_York). It covers:
+- **Workflow runs:** reviews the last 24h of `build`, `publish`, `image` and `update-check`. On a failure it finds the
+  root cause and opens a fix PR; it merges pipeline-only fixes itself, then re-runs and verifies.
+- **Update PRs:** reviews every open `update/*` PR opened by `update-check` (PKGBUILD diff, sources and checksums,
+  upstream URL, install scripts, anything suspicious), closes superseded ones (newest per package wins; `update-check`
+  also closes older ones itself) and posts a short verdict.
+- **Never merges** AUR recipe or new-package PRs. Those get signed, so Wyatt merges them after reading the verdict.
+- Posts to the project chat only when stuck, when a fix needs Wyatt, or when an update PR needs a decision.
+
 ## Security
 Public repo + self-hosted runner: workflows never run on `pull_request`; require approval for
 outside collaborators. The build job has no secrets; only `publish` (separate runner) holds the GPG key.

@@ -37,15 +37,22 @@ sudo pacman -Sy wyatt-host-acer-swift-16   # or wyatt-host-dell-g7-17
   a drop-in pointing greetd at it, and a systemd preset. Pacman never enables services, so once per machine:
   `sudo systemctl preset greetd.service` (or `sudo systemctl enable greetd.service`), then reboot.
 
-## Nightly review agent
-A scheduled Claude agent runs daily at 03:00 (America/New_York). It covers:
-- **Workflow runs:** reviews the last 24h of `build`, `publish`, `image` and `update-check`. On a failure it finds the
-  root cause and opens a fix PR; it merges pipeline-only fixes itself, then re-runs and verifies.
-- **Update PRs:** reviews every open `update/*` PR opened by `update-check` (PKGBUILD diff, sources and checksums,
-  upstream URL, install scripts, anything suspicious), closes superseded ones (newest per package wins; `update-check`
-  also closes older ones itself) and posts a short verdict.
-- **Never merges** AUR recipe or new-package PRs. Those get signed, so Wyatt merges them after reading the verdict.
-- Posts to the project chat only when stuck, when a fix needs Wyatt, or when an update PR needs a decision.
+## Review agents
+Two Claude agents look after this repo.
+
+**Nightly workflow review** (scheduled, 02:47 America/New_York)
+- Reviews the last 24h of `build`, `publish`, `image` and `update-check`. On a failure it finds the root cause and
+  opens a fix PR; it merges pipeline-only fixes itself, then re-runs and verifies (up to 3 attempts, then marks it stuck).
+- Does not touch AUR update PRs.
+
+**AUR update PR reviewer** (fired by a GitHub pull request event, not a schedule)
+- Runs when a PR from `update-check` (branch `update/*`, title `aur: <name> ...`, including new packages) is opened or
+  updated. Closes superseded PRs for the same package (newest wins), reads the PKGBUILD/.SRCINFO diff (sources and
+  checksums, upstream URL, install scripts, anything run or downloaded at build time, new dependencies) and posts a
+  verdict: safe to merge, needs a look, or do not merge.
+- **Never merges, approves or enables auto-merge** on these PRs. They get signed, so Wyatt merges them after reading the verdict.
+
+Both post to the project chat only when something needs Wyatt (stuck run, fix needing his merge, update PR awaiting him, risk found).
 
 ## Security
 Public repo + self-hosted runner: workflows never run on `pull_request`; require approval for

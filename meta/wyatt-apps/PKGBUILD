@@ -19,6 +19,7 @@ depends=(
   ya-claude-code
   spotify-launcher
   steam  # official [multilib]; needs multilib enabled in /etc/pacman.conf
+  syncthing
 )
 optdepends=(
   'blender: 3D modelling'

@@ -39,6 +39,7 @@ depends=(
   gnome-characters
   cava
   bluetui
+  termdown
   python-cairo
   python-gobject
   pipewire-pulse

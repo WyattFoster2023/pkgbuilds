@@ -19,6 +19,7 @@ depends=(
   ya-claude-code
   spotify-launcher
   steam  # official [multilib]; needs multilib enabled in /etc/pacman.conf
+  gamescope  # official; game-scoped resolution/upscaling compositor (Steam launch options)
   syncthing
 )
 optdepends=(

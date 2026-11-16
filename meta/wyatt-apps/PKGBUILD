@@ -18,6 +18,7 @@ depends=(
   claude-desktop-extra
   ya-claude-code
   spotify-launcher
+  steam  # official [multilib]; needs multilib enabled in /etc/pacman.conf
 )
 optdepends=(
   'blender: 3D modelling'
@@ -25,7 +26,6 @@ optdepends=(
   'kicad: PCB design'
   'inkscape: vector graphics'
   'gimp: image editing'
-  'steam: games'
   'ollama: local LLMs'
   'cursor-bin: AI editor'
   'libreoffice-still: office suite'
